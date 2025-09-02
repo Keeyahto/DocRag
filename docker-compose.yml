@@ -1,0 +1,56 @@
+version: "3.9"
+services:
+  api:
+    build: ./apps/api
+    ports: ["8000:8000"]
+    environment:
+      - APP_ENV=local
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - REDIS_URL=redis://redis:6379/0
+      - EMBED_BACKEND=${EMBED_BACKEND:-sentence_transformers}
+      - EMBED_MODEL=${EMBED_MODEL:-sentence-transformers/all-MiniLM-L6-v2}
+      - EMBED_BATCH_SIZE=${EMBED_BATCH_SIZE:-64}
+      - LLM_BACKEND=${LLM_BACKEND:-ollama}
+      - LLM_MODEL=${LLM_MODEL:-llama3:8b}
+      - LLM_TEMPERATURE=${LLM_TEMPERATURE:-0.2}
+      - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-512}
+      - CHUNK_MAX_TOKENS=${CHUNK_MAX_TOKENS:-512}
+      - CHUNK_OVERLAP=${CHUNK_OVERLAP:-64}
+      - TOP_K=${TOP_K:-5}
+      - MAX_FILE_MB=${MAX_FILE_MB:-30}
+      - MAX_FILES_PER_REQUEST=${MAX_FILES_PER_REQUEST:-3}
+      - OPENAI_API_KEY
+      - OPENAI_BASE_URL
+      - OLLAMA_HOST
+    volumes:
+      - ./data:/app/data
+    depends_on: [redis]
+
+  worker:
+    build: ./apps/worker
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - EMBED_BACKEND=${EMBED_BACKEND:-sentence_transformers}
+      - EMBED_MODEL=${EMBED_MODEL:-sentence-transformers/all-MiniLM-L6-v2}
+      - EMBED_BATCH_SIZE=${EMBED_BATCH_SIZE:-64}
+      - CHUNK_MAX_TOKENS=${CHUNK_MAX_TOKENS:-512}
+      - CHUNK_OVERLAP=${CHUNK_OVERLAP:-64}
+    volumes:
+      - ./data:/app/data
+    depends_on: [redis]
+
+  bot:
+    build: ./apps/bot
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - API_BASE_URL=http://api:8000
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    depends_on: [api]
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+
+volumes:
+  # data — bind в проекте; отдельный volume не обязателен
