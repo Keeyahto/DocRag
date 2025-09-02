@@ -11,11 +11,11 @@ export function setTenant(id: string) {
 export async function ensureTenant(apiBase?: string): Promise<string> {
   const current = getTenant();
   if (current) return current;
-  const base = apiBase || process.env.NEXT_PUBLIC_API_BASE_URL || '';
+  // Default to API on localhost:8000 if env is not set
+  const base = apiBase || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
   const res = await fetch(`${base}/tenant/new`, { method: 'POST' });
   if (!res.ok) throw new Error('Не удалось создать tenant');
   const data = await res.json();
   setTenant(data.tenant);
   return data.tenant;
 }
-

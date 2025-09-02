@@ -11,7 +11,8 @@ export async function parseSSE(stream: ReadableStream<Uint8Array>, handlers: SSE
   let buffer = "";
 
   const flush = (chunk: string) => {
-    buffer += chunk;
+    // Normalize line endings to \n to reliably detect SSE record boundaries
+    buffer += chunk.replace(/\r\n/g, "\n");
     let idx: number;
     while ((idx = buffer.indexOf("\n\n")) !== -1) {
       const block = buffer.slice(0, idx);
@@ -52,4 +53,3 @@ export async function parseSSE(stream: ReadableStream<Uint8Array>, handlers: SSE
     handlers.onError?.((e as any)?.message || "network error");
   }
 }
-

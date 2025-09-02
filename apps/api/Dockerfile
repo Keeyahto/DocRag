@@ -5,11 +5,14 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-COPY apps/api/requirements.txt /tmp/req.txt
-RUN pip install --no-cache-dir -r /tmp/req.txt
+# Copy requirements first for better caching
+COPY requirements.txt /tmp/req.txt
+RUN pip install -r /tmp/req.txt
 
-# Copy shared kits and app code
+# Copy shared kits first
 COPY kits ./kits
+
+# Copy app code last
 COPY apps/api ./apps/api
 
 EXPOSE 8000

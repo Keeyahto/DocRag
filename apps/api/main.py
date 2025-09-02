@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import AsyncGenerator, Dict, List, Literal, Optional
 
 from fastapi import BackgroundTasks, Depends, FastAPI, File, Header, HTTPException, Request, Response, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 from sse_starlette.sse import EventSourceResponse
 
@@ -148,6 +149,24 @@ def get_top_k() -> int:
 
 app = FastAPI()
 
+# CORS: allow web UI (Next.js) on localhost by default.
+_cors_origins_env = os.getenv("CORS_ORIGINS")
+if _cors_origins_env:
+    _origins = [o.strip() for o in _cors_origins_env.split(",") if o.strip()]
+else:
+    _origins = [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_origins or ["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.on_event("startup")
 async def on_startup():
@@ -172,19 +191,11 @@ def tenant_new():
 
 def _run_index_sync(tenant: str, saved_paths: List[str]):
     # Run indexing synchronously in-process (for tests/local fallback)
-    from apps.worker.worker import index_files_job
-    prev = os.getenv("EMBED_BACKEND")
-    try:
-        # Force lightweight deterministic backend to ensure fixed dimension
-        os.environ["EMBED_BACKEND"] = "hash"
-        index_files_job(tenant, saved_paths)
-    finally:
-        if prev is not None:
-            os.environ["EMBED_BACKEND"] = prev
-        else:
-            os.environ.pop("EMBED_BACKEND", None)
+    # Note: This requires worker module to be available
+    # For now, we'll skip sync indexing and rely on async only
+    logger.warning("Sync indexing not available - worker module not accessible")
     # Create a pseudo job id
-    return {"job_id": "sync", "tenant": tenant}
+    return {"job_id": "sync", "tenant": tenant, "status": "not_available"}
 
 
 @app.post("/index")
@@ -220,21 +231,18 @@ async def index(
     # Decide sync vs async
     force_sync = os.getenv("INDEX_SYNC", "0") in {"1", "true", "True"}
     if force_sync:
-        res = _run_index_sync(tenant, saved_paths)
-        return JSONResponse(status_code=200, content={**res, "files": [i.model_dump() for i in infos]})
+        logger.warning("INDEX_SYNC is set but sync indexing is not available")
+        # Fall back to async indexing
+        force_sync = False
 
     try:
         q = get_queue()
         job = q.enqueue("apps.worker.worker.index_files_job", tenant, saved_paths)
         logger.info("Enqueued INDEX_FILES job=%s tenant=%s files=%d", job.id, tenant, len(saved_paths))
-        # Optionally eager-run indexing too (for tests) while still returning 202
-        if os.getenv("INDEX_EAGER", "0") in {"1", "true", "True"}:
-            _run_index_sync(tenant, saved_paths)
         return JSONResponse(status_code=202, content={"job_id": job.id, "tenant": tenant, "files": [i.model_dump() for i in infos]})
     except Exception as e:
-        logger.warning("Queue enqueue failed, falling back to sync indexing: %s", e)
-        res = _run_index_sync(tenant, saved_paths)
-        return JSONResponse(status_code=200, content={**res, "files": [i.model_dump() for i in infos]})
+        logger.error("Queue enqueue failed: %s", e)
+        raise HTTPException(status_code=500, detail={"error": {"code": 500, "type": "internal_error", "message": "Failed to enqueue indexing job"}})
 
 
 @app.get("/status/{job_id}")

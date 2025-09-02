@@ -128,7 +128,8 @@ def index_files_job(tenant: str, file_paths: List[str]):
 def main():
     redis_url = os.getenv("REDIS_URL", "redis://redis:6379/0")
     r = Redis.from_url(redis_url)
-    w = Worker([Queue()])
+    q = Queue(connection=r)
+    w = Worker([q], connection=r)
     w.work()
 
 

@@ -5,10 +5,14 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-COPY apps/worker/requirements.txt /tmp/req.txt
-RUN pip install --no-cache-dir -r /tmp/req.txt
+# Copy requirements first for better caching
+COPY requirements.txt /tmp/req.txt
+RUN pip install -r /tmp/req.txt
 
+# Copy shared kits first
 COPY kits ./kits
+
+# Copy app code last
 COPY apps/worker ./apps/worker
 
 CMD ["python", "-m", "apps.worker.worker"]

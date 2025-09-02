@@ -1,7 +1,8 @@
 import type { IndexAcceptedResponse, IndexSyncResponse, StatusResponse, QAResponse, SourcePreview, ErrorEnvelope } from "@/lib/types";
 import { parseSSE } from "@/lib/sse";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "";
+// Default to API on localhost:8000 when not provided via env
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
 export async function apiFetch<T>(path: string, init?: RequestInit, opts?: { tenant?: string, expectJson?: boolean }): Promise<T> {
   const headers = new Headers(init?.headers || {});

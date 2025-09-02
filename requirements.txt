@@ -1,0 +1,40 @@
+# Общие зависимости для DocRag проекта
+
+# LangChain и обработка документов
+langchain-community>=0.3.29
+langchain-core>=0.3.0
+langchain>=0.3.0
+
+# OpenAI интеграция
+openai>=1.0.0
+
+# PDF обработка
+pypdf>=3.0.0
+PyPDF2==3.0.1
+
+# Документы
+docx2txt==0.8
+
+# Векторные базы данных
+faiss-cpu>=1.11.0
+
+# Машинное обучение
+sentence-transformers==3.0.1
+
+# Redis и очереди
+redis==5.0.7
+rq==1.16.2
+
+# FastAPI
+fastapi>=0.112.0
+uvicorn[standard]==0.30.0
+python-multipart==0.0.9
+aiofiles==23.2.1
+httpx==0.27.0
+sse-starlette==2.1.0
+
+# Telegram Bot
+aiogram>=3.7.0
+
+# Утилиты
+python-dotenv==1.0.1
