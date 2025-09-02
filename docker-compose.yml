@@ -1,7 +1,9 @@
 version: "3.9"
 services:
   api:
-    build: ./apps/api
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
     ports: ["8000:8000"]
     environment:
       - APP_ENV=local
@@ -27,7 +29,9 @@ services:
     depends_on: [redis]
 
   worker:
-    build: ./apps/worker
+    build:
+      context: .
+      dockerfile: ./apps/worker/Dockerfile
     environment:
       - REDIS_URL=redis://redis:6379/0
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
@@ -41,7 +45,9 @@ services:
     depends_on: [redis]
 
   bot:
-    build: ./apps/bot
+    build:
+      context: .
+      dockerfile: ./apps/bot/Dockerfile
     environment:
       - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
       - API_BASE_URL=http://api:8000
@@ -52,5 +58,5 @@ services:
     image: redis:7-alpine
     ports: ["6379:6379"]
 
-volumes:
-  # data — bind в проекте; отдельный volume не обязателен
+# volumes:
+#   # data — bind в проекте; отдельный volume не обязателен
