@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ensureTenant, getTenant } from "@/lib/tenant";
 import { AskForm } from "@/components/AskForm";
 import { StreamAnswer } from "@/components/StreamAnswer";
@@ -23,4 +23,3 @@ export default function AskPage() {
     </div>
   );
 }
-

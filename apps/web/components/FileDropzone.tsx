@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { validateFiles } from "@/lib/validators";
 
 export function FileDropzone({ onFiles }: { onFiles: (fs: File[]) => void }) {
@@ -23,4 +23,3 @@ export function FileDropzone({ onFiles }: { onFiles: (fs: File[]) => void }) {
     </div>
   );
 }
-

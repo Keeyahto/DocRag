@@ -1,3 +1,4 @@
+import React from 'react'
 import { renderHighlighted } from "@/lib/highlight";
 
 export function HighlightedSnippet({ snippet, ranges }:{ snippet: string, ranges: [number, number][] }){
@@ -7,4 +8,3 @@ export function HighlightedSnippet({ snippet, ranges }:{ snippet: string, ranges
     </p>
   );
 }
-

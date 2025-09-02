@@ -1,3 +1,4 @@
+import React from 'react'
 import type { SourcePreview } from "@/lib/types";
 import { SourcesList } from "@/components/SourcesList";
 
@@ -14,4 +15,3 @@ export function StreamAnswer({ answer, sources }: { answer: string, sources: Sou
     </div>
   );
 }
-

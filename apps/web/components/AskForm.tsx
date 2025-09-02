@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { ask, askStream } from "@/lib/apiClient";
 
 export function AskForm({ tenant, onNewAnswer, onContext, onText }:{ tenant: string|null, onNewAnswer:()=>void, onContext:(s:any)=>void, onText:(t:string)=>void }){
@@ -42,4 +42,3 @@ export function AskForm({ tenant, onNewAnswer, onContext, onText }:{ tenant: str
     </div>
   );
 }
-

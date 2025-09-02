@@ -1,4 +1,4 @@
-import { Fragment, ReactNode } from "react";
+import React, { Fragment, ReactNode } from "react";
 
 export function renderHighlighted(snippet: string, ranges: [number, number][]): ReactNode[] {
   if (!ranges || ranges.length === 0) return [snippet];
@@ -19,4 +19,3 @@ export function renderHighlighted(snippet: string, ranges: [number, number][]): 
   if (pos < snippet.length) out.push(<Fragment key="post">{snippet.slice(pos)}</Fragment>);
   return out;
 }
-

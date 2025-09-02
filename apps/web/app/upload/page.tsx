@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ensureTenant } from "@/lib/tenant";
 import { FileDropzone } from "@/components/FileDropzone";
 import { UploadList } from "@/components/UploadList";
@@ -57,4 +57,3 @@ export default function UploadPage() {
     </div>
   );
 }
-

@@ -1,3 +1,4 @@
+import React from 'react'
 import type { SourcePreview } from "@/lib/types";
 import { HighlightedSnippet } from "@/components/HighlightedSnippet";
 
@@ -21,4 +22,3 @@ export function SourcesList({ sources }: { sources: SourcePreview[] }){
     </div>
   );
 }
-

@@ -1,3 +1,4 @@
+import React from 'react'
 import { describe, it, expect } from 'vitest'
 import { renderHighlighted } from '../lib/highlight'
 import { render } from '@testing-library/react'
@@ -29,4 +30,3 @@ describe('renderHighlighted', () => {
     expect(marks[0].textContent).toBe('bcde')
   })
 })
-
