@@ -1,6 +1,6 @@
 # DocRAG
 
-*Читать на русском: README.ru.md*
+_Читать на русском: [README.ru.md](./README.ru.md)_
 
 **DocRAG** is a compact, demo-friendly RAG (Retrieval-Augmented Generation) you can run locally or in Docker. It indexes your documents (PDF/MD/TXT/DOCX) into FAISS and answers questions with an LLM via streaming, showing highlighted source snippets. It’s built for quick demos and local experiments.
 
