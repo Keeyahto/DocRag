@@ -144,6 +144,10 @@ Environment is read from the root `.env` (or process env). `data/` folders are c
 
 ## Telegram Bot (optional)
 
+
+https://github.com/user-attachments/assets/b4dd7d02-57e5-4f72-9135-04d17c6c2b4e
+
+
 Set `TELEGRAM_BOT_TOKEN` in `.env`. With docker compose, the bot connects to the API at `http://api:8000`. Commands: `/upload` (send a file), `/ask <question>`, `/reset`.
 
 ## Tests
