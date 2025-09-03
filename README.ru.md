@@ -140,6 +140,10 @@ curl -s -X POST -H "X-Tenant-ID: $TENANT" http://localhost:8000/reset
 
 ## Telegram-бот (опционально)
 
+
+https://github.com/user-attachments/assets/7d08ede9-5552-4a7c-8cd2-6d3fd2224ac9
+
+
 Задайте `TELEGRAM_BOT_TOKEN` в `.env`. В `docker compose` бот ходит в API по `http://api:8000`. Команды: `/upload` (пришлите файл), `/ask <вопрос>`, `/reset`.
 
 ## Тесты
