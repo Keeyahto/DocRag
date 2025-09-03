@@ -7,10 +7,32 @@ html, body {
 }
 
 body {
-  @apply bg-neutral-50 text-neutral-900;
+  @apply bg-neutral-50 text-neutral-900 antialiased;
 }
 
 a {
   @apply text-blue-600 hover:underline;
 }
 
+/* Components */
+@layer components {
+  .card { @apply rounded-2xl border bg-white shadow-sm; }
+  .card-body { @apply p-4 md:p-6; }
+  .btn { @apply inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-colors; }
+  .btn-primary { @apply btn bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-60 disabled:pointer-events-none; }
+  .btn-secondary { @apply btn bg-neutral-100 hover:bg-neutral-200; }
+  .btn-ghost { @apply btn bg-transparent hover:bg-neutral-100; }
+  .input { @apply border rounded-xl px-3 py-2 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200; }
+  .label { @apply text-sm text-neutral-700; }
+  .badge { @apply inline-flex items-center rounded-lg bg-neutral-100 px-2 py-1 text-xs text-neutral-700; }
+  .progress { @apply w-full h-2 rounded-full bg-neutral-200 overflow-hidden; }
+  .progress-bar { @apply h-full bg-blue-600; }
+}
+
+::selection { @apply bg-blue-200; }
+
+@keyframes progress {
+  0% { transform: translateX(-60%); width: 40%; }
+  50% { transform: translateX(20%); width: 60%; }
+  100% { transform: translateX(120%); width: 40%; }
+}

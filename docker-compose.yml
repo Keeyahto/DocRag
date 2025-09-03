@@ -18,7 +18,7 @@ services:
       - LLM_BACKEND=${LLM_BACKEND:-ollama}
       - LLM_MODEL=${LLM_MODEL:-llama3:8b}
       - LLM_TEMPERATURE=${LLM_TEMPERATURE:-0.2}
-      - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-512}
+      - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-4096}
       - CHUNK_MAX_TOKENS=${CHUNK_MAX_TOKENS:-512}
       - CHUNK_OVERLAP=${CHUNK_OVERLAP:-64}
       - TOP_K=${TOP_K:-5}
@@ -43,6 +43,7 @@ services:
       - EMBED_BATCH_SIZE=${EMBED_BATCH_SIZE:-64}
       - CHUNK_MAX_TOKENS=${CHUNK_MAX_TOKENS:-512}
       - CHUNK_OVERLAP=${CHUNK_OVERLAP:-64}
+      - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-4096}
     volumes:
       - ./data:/app/data
     depends_on: [redis]

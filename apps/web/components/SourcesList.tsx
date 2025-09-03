@@ -11,12 +11,14 @@ export function SourcesList({ sources }: { sources: SourcePreview[] }){
     <div className="space-y-3">
       <h3 className="font-semibold">Источники ({items.length})</h3>
       {items.map((s) => (
-        <div key={s.id} className="border rounded-xl p-3 bg-white">
-          <div className="flex items-center justify-between">
-            <div className="text-sm font-medium">{s.filename || "(без имени)"} {s.page ? `(стр. ${s.page})` : ""}</div>
+        <div key={s.id} className="card">
+          <div className="card-body p-3">
+            <div className="flex items-center justify-between">
+              <div className="text-sm font-medium">{s.filename || "(без имени)"} {s.page ? `(стр. ${s.page})` : ""}</div>
             <div className="text-xs text-neutral-500">score: {s.score.toFixed(2)}</div>
+            </div>
+            <HighlightedSnippet snippet={s.snippet} ranges={s.highlights} />
           </div>
-          <HighlightedSnippet snippet={s.snippet} ranges={s.highlights} />
         </div>
       ))}
     </div>

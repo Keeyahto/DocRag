@@ -26,20 +26,19 @@ export function Header() {
   };
 
   return (
-    <header className="bg-white border-b">
+    <header className="sticky top-0 z-40 border-b bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <div className="container mx-auto max-w-5xl px-4 py-3 flex items-center justify-between gap-4">
-        <nav className="flex items-center gap-4">
-          <Link href="/" className="font-bold">DocRAG</Link>
-          <Link href="/upload">Загрузка</Link>
-          <Link href="/ask">Вопрос</Link>
-          <Link href="/debug/search" className="text-neutral-500">Debug</Link>
+        <nav className="flex items-center gap-5">
+          <Link href="/" className="font-semibold tracking-tight text-neutral-900">DocRAG</Link>
+          <Link href="/upload" className="text-neutral-700 hover:text-neutral-900 transition-colors">Загрузка</Link>
+          <Link href="/ask" className="text-neutral-700 hover:text-neutral-900 transition-colors">Вопрос</Link>
+          <Link href="/debug/search" className="text-neutral-400 hover:text-neutral-700 transition-colors">Debug</Link>
         </nav>
         <div className="flex items-center gap-3">
           {tenant && <TenantBadge tenant={tenant} />}
-          <button onClick={onReset} className="rounded-xl px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200">Сброс</button>
+          <button onClick={onReset} className="btn-secondary">Сброс</button>
         </div>
       </div>
     </header>
   );
 }
-

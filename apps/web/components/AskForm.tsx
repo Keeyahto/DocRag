@@ -29,15 +29,25 @@ export function AskForm({ tenant, onNewAnswer, onContext, onText }:{ tenant: str
   };
 
   return (
-    <div className="space-y-3">
-      <textarea value={q} onChange={e=>setQ(e.target.value)} placeholder="Ваш вопрос" className="w-full border rounded px-3 py-2 h-28" />
-      <div className="flex items-center gap-3">
-        <label className="text-sm text-neutral-700">top_k</label>
-        <input type="number" value={k} min={1} onChange={e=>setK(Number(e.target.value))} className="w-20 border rounded px-2 py-1" />
-      </div>
-      <div className="flex gap-3">
-        <button disabled={!can} onClick={submitPlain} className="rounded-xl px-4 py-2 bg-neutral-100 hover:bg-neutral-200 disabled:opacity-50">Спросить (без стрима)</button>
-        <button disabled={!can} onClick={submitStream} className="rounded-xl px-4 py-2 bg-neutral-100 hover:bg-neutral-200 disabled:opacity-50">Стримить ответ</button>
+    <div className="card">
+      <div className="card-body space-y-4">
+        <textarea value={q} onChange={e=>setQ(e.target.value)} placeholder="Ваш вопрос" className="input w-full h-32" />
+        <div className="flex items-center gap-3">
+          <label className="label">top_k</label>
+          <input type="number" value={k} min={1} onChange={e=>setK(Number(e.target.value))} className="input w-24" />
+          {loading && (
+            <div className="flex-1">
+              <div className="progress"><div className="progress-bar w-1/3 animate-[progress_1.2s_ease-in-out_infinite]" /></div>
+            </div>
+          )}
+        </div>
+        <div className="flex gap-3">
+          <button disabled={!can} onClick={submitPlain} className="btn-secondary">Спросить (без стрима)</button>
+          <button disabled={!can} onClick={submitStream} className="btn-primary">
+            {loading && (<span className="inline-block h-4 w-4 border-2 border-white/70 border-t-transparent rounded-full animate-spin" />)}
+            Стримить ответ
+          </button>
+        </div>
       </div>
     </div>
   );
